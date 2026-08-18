@@ -57,6 +57,17 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(decision["recommendation_status"], "not_ready")
         self.assertEqual(decision["first_choice"], "")
 
+    def test_readiness_summary_is_built(self):
+        inp = {"name_fa": "کالا", "name_en": "Sample widget", "specs": "220V", "qty_hint": "10 units"}
+        with patch("agent.toolkit.run_queries", return_value=[]), patch("agent.webutil.fetch_many", return_value={}):
+            dossier = run_pipeline(inp, lambda *args: None)
+        summary = dossier["summary"]
+        self.assertIn("score", summary)
+        self.assertIn("stages", summary)
+        self.assertIn("metrics", summary)
+        self.assertIn("product", summary["stages"])
+        self.assertEqual(summary["score"], summary["score"])
+
     def test_empty_web_run_still_exports_honest_files(self):
         inp = {"name_fa": "محصول آزمایشی", "name_en": "Test industrial widget", "specs": "Grade A, 220V", "qty_hint": "10 units", "owner_fa": "", "owner_en": "", "buyer_city": "Tehran, Iran"}
         with patch("agent.toolkit.run_queries", return_value=[]), patch("agent.webutil.fetch_many", return_value={}):
@@ -64,7 +75,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(dossier["sourcing"]["longlist"], [])
         self.assertEqual(dossier["decision"]["recommendation_status"], "not_ready")
         self.assertEqual(dossier["meta"]["developer_en"], "Setayesh Jafari")
-        self.assertEqual(dossier["meta"]["agent_version"], "4.0-trade-ready")
+        self.assertEqual(dossier["meta"]["agent_version"], "4.1-premium")
         self.assertNotIn("course", dossier["meta"])
         self.assertNotIn("student_fa", dossier["meta"])
         with tempfile.TemporaryDirectory() as td:

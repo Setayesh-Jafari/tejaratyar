@@ -1,3 +1,19 @@
+# TejaratYar 4.1 Premium — Changelog
+
+## UI / UX redesign
+- New premium palette: deep **emerald/teal + warm gold on warm paper**, replacing the old blue/navy scheme; warmer, more "institutional/commodity" feel.
+- Richer typography with the local Vazirmatn weights (no CDN).
+- **4-step intake wizard** (product → technical → buyer → review) with a progress bar, per-step validation and a final review screen.
+- Results rendered as a **sectioned executive report** with a sticky scrollspy nav, a **0–100 readiness gauge** and per-stage readiness meters.
+- KPI cards, decision cards, comparison cards and status badges all restyled and more detailed.
+
+## Backend
+- **Multi-engine web search** (`webutil.py`): tries Google/Brave/Bing/Mojeek/Yahoo/Mullvad with automatic fallback, tagging the engine used; single blocked engine can no longer fail discovery.
+- New computed `dossier["summary"]` readiness block (score, label, per-stage breakdown, metrics, highlights) powering the hero dashboard.
+- Version bumped to `4.1-premium`; tests updated and a new readiness test added.
+
+---
+
 # TejaratYar 4.0 Trade Ready — Changelog
 
 ## Front-end (self-contained, trader-first)

@@ -248,7 +248,7 @@ def api_file(job_id: str, kind: str):
 
 @app.get("/health")
 def health():
-    return jsonify({"ok": True, "service": "tejaratyar", "version": "4.0-trade-ready", "developer": "Setayesh Jafari"})
+    return jsonify({"ok": True, "service": "tejaratyar", "version": "4.1-premium", "developer": "Setayesh Jafari"})
 
 
 if __name__ == "__main__":

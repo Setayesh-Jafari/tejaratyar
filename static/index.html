@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="تجارت‌یار — سامانه هوشمند و شواهدمحور تصمیم‌گیری واردات، تأمین‌کننده‌یابی و اعتبارسنجی" />
   <title>تجارت‌یار — سامانه هوشمند تصمیم‌یار واردات</title>
-  <link rel="stylesheet" href="/static/styles.css?v=10" />
+  <link rel="stylesheet" href="/static/styles.css?v=11" />
 </head>
 <body>
   <div class="app">
@@ -16,7 +16,7 @@
         <div>
           <div class="name">تجارت‌یار</div>
           <div class="tag">Trade Decision Intelligence</div>
-          <span class="version">v4.0 TRADE-READY</span>
+          <span class="version">v4.1 PREMIUM</span>
         </div>
       </div>
 
@@ -35,13 +35,13 @@
       <div class="foot">
         <div class="resume-card" id="resumeCard" hidden>
           <b>پرونده قبلی در دسترس است</b>
-          <button class="btn btn-primary btn-sm" id="resumeBtn">ادامه پرونده قبلی</button>
+          <button class="btn btn-gold btn-sm" id="resumeBtn" style="width:100%">ادامه پرونده قبلی</button>
         </div>
-        <div class="brand" style="margin-top:12px; opacity:.8">
-          <div class="logo" style="width:34px;height:34px;font-size:12px">س‌ج</div>
+        <div class="credit">
+          <div class="logo">س‌ج</div>
           <div>
-            <div class="name" style="font-size:12.5px">ستایش جعفری</div>
-            <div class="tag" style="font-size:10px">Import &amp; Trade Automation</div>
+            <div class="name">ستایش جعفری</div>
+            <div class="tag">Import &amp; Trade Automation</div>
           </div>
         </div>
       </div>
@@ -56,115 +56,120 @@
           <p class="sub" id="pageSub">مشخصات تجاری را وارد کنید؛ تجارت‌یار منابع، تأمین‌کنندگان، ریسک‌ها و خروجی‌های تصمیم‌گیری را تحلیل می‌کند.</p>
         </div>
         <div class="top-actions" id="downloadBar" hidden>
-          <button class="btn" id="dlReport">📄 گزارش تصمیم‌گیری</button>
-          <button class="btn" id="dlExcel">📊 Workbook تحلیلی</button>
-          <button class="btn" id="dlRfq">✉️ بسته RFQ</button>
-          <button class="btn" id="dlPrompts">🧠 روش‌شناسی</button>
-          <button class="btn" id="printBtn">🖨️ چاپ خلاصه</button>
+          <button class="btn btn-soft" id="dlReport">📄 گزارش تصمیم‌گیری</button>
+          <button class="btn btn-soft" id="dlExcel">📊 Workbook</button>
+          <button class="btn btn-soft" id="dlRfq">✉️ بسته RFQ</button>
+          <button class="btn btn-soft" id="dlPrompts">🧠 روش‌شناسی</button>
+          <button class="btn btn-gold" id="printBtn">🖨️ چاپ خلاصه</button>
         </div>
       </header>
 
-      <!-- Capability cards -->
       <section class="cap-grid" id="capabilityGrid">
         <div class="cap"><div class="ic">E</div><div><strong>Evidence-first</strong><small>هر ادعا به منبع و تاریخ بررسی متصل می‌شود.</small></div></div>
         <div class="cap"><div class="ic">R</div><div><strong>Entity Resolution</strong><small>نتیجه جستجو با شرکت واقعی اشتباه گرفته نمی‌شود.</small></div></div>
         <div class="cap"><div class="ic">G</div><div><strong>Decision Gates</strong><small>گزینه ضعیف به‌اجبار وارد پیشنهاد نمی‌شود.</small></div></div>
-        <div class="cap"><div class="ic">X</div><div><strong>Executive Deliverables</strong><small>گزارش، Workbook، RFQ و روش‌شناسی.</small></div></div>
+        <div class="cap"><div class="ic">X</div><div><strong>Executive Reports</strong><small>گزارش، Workbook، RFQ و روش‌شناسی.</small></div></div>
       </section>
 
-      <!-- ================= Intake form ================= -->
+      <!-- ================= Wizard intake ================= -->
       <section id="view-form" class="view active">
-        <form id="intake" autocomplete="off">
-          <div class="card">
-            <div class="section-head">
-              <div><h2>۱) سناریوهای نمونه</h2><p class="muted" style="margin:2px 0 0">برای دمو یک سناریو را انتخاب کنید یا پرونده اختصاصی بسازید.</p></div>
-            </div>
-            <div class="chips" id="quickChips"></div>
-          </div>
+        <form id="intake" autocomplete="off" novalidate>
+          <div class="wizard">
+            <div class="wizard-bar" id="wizardBar"></div>
+            <div class="wizard-body">
 
-          <div class="card">
-            <div class="section-head">
-              <div><h2>۲) دامنه فنی و تجاری کالا</h2><p class="muted" style="margin:2px 0 0">فیلدهای ستاره‌دار حداقل اطلاعات لازم برای تحلیل قابل دفاع هستند.</p></div>
-            </div>
-            <div class="grid2">
-              <label class="field">نام فارسی کالا <em>*</em>
-                <input name="product_fa" id="product_fa" required autocomplete="off" placeholder="مثلاً پنل خورشیدی مونوکریستال" />
-              </label>
-              <label class="field">نام انگلیسی کالا <em>*</em>
-                <input name="product_en" id="product_en" required autocomplete="off" placeholder="Monocrystalline solar PV module" />
-              </label>
-              <label class="field">گروه محصول
-                <select name="product_category">
-                  <option value="auto">تشخیص خودکار</option>
-                  <option value="agricultural_food">کشاورزی / غذای خام</option>
-                  <option value="processed_food">غذا / مکمل / ماده خوراکی فرآوری‌شده</option>
-                  <option value="medical_device">تجهیزات و ملزومات پزشکی</option>
-                  <option value="electrical_electronic">برقی / الکترونیکی / انرژی</option>
-                  <option value="machinery">ماشین‌آلات و تجهیزات صنعتی</option>
-                  <option value="chemical_material">مواد شیمیایی / پلیمری / فلزی / نساجی</option>
-                  <option value="automotive">خودرویی</option>
-                  <option value="general">عمومی</option>
-                </select>
-              </label>
-              <label class="field">کاربرد در ایران
-                <input name="application" autocomplete="off" placeholder="نیروگاه، کارخانه، خرده‌فروشی" />
-              </label>
-              <label class="field">گرید / مدل / ظرفیت
-                <input name="grade_model" autocomplete="off" placeholder="550W / Grade A" />
-              </label>
-              <label class="field">واحد خرید
-                <input name="unit" autocomplete="off" placeholder="کیلوگرم / دستگاه" />
-              </label>
-              <label class="field">مشخصات فنی اصلی <em>*</em>
-                <input name="specs" required autocomplete="off" placeholder="ولتاژ، خلوص، جنس، گرید، ابعاد یا استاندارد محصول" />
-              </label>
-              <label class="field">مقدار تقریبی سفارش <em>*</em>
-                <input name="qty_hint" required autocomplete="off" placeholder="ترجیحاً انگلیسی؛ مثلاً one 20-foot container" />
-              </label>
-              <label class="field">مشتری هدف
-                <input name="target_customer" autocomplete="off" placeholder="عمده‌فروش، کارخانه، کلینیک" />
-              </label>
-              <label class="field">ترجیح کشور مبدأ
-                <input name="origin_pref" autocomplete="off" placeholder="چین / ترکیه / هند / اروپا" />
-              </label>
-            </div>
-          </div>
+              <div class="wizard-step" data-step="0">
+                <div class="section-head"><div><h2>۱ · کالا و دسته</h2><p class="muted" style="margin:2px 0 0">یک سناریو را انتخاب یا مشخصات محصول خود را وارد کنید.</p></div></div>
+                <div class="chips" id="quickChips" style="margin-bottom:18px"></div>
+                <div class="grid2">
+                  <label class="field">نام فارسی کالا <em>*</em>
+                    <input name="product_fa" id="product_fa" autocomplete="off" placeholder="مثلاً پنل خورشیدی مونوکریستال" />
+                  </label>
+                  <label class="field">نام انگلیسی کالا <em>*</em>
+                    <input name="product_en" id="product_en" autocomplete="off" placeholder="Monocrystalline solar PV module" />
+                  </label>
+                  <label class="field" style="grid-column:1/-1">گروه محصول
+                    <select name="product_category">
+                      <option value="auto">تشخیص خودکار</option>
+                      <option value="agricultural_food">کشاورزی / غذای خام</option>
+                      <option value="processed_food">غذا / مکمل / ماده خوراکی فرآوری‌شده</option>
+                      <option value="medical_device">تجهیزات و ملزومات پزشکی</option>
+                      <option value="electrical_electronic">برقی / الکترونیکی / انرژی</option>
+                      <option value="machinery">ماشین‌آلات و تجهیزات صنعتی</option>
+                      <option value="chemical_material">مواد شیمیایی / پلیمری / فلزی / نساجی</option>
+                      <option value="automotive">خودرویی</option>
+                      <option value="general">عمومی</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
 
-          <div class="card">
-            <div class="section-head">
-              <div><h2>۳) مالک پرونده و هویت گزارش</h2><p class="muted" style="margin:2px 0 0">این اطلاعات در گزارش مدیریتی و مکاتبات RFQ استفاده می‌شود.</p></div>
-            </div>
-            <div class="grid2">
-              <label class="field" style="grid-column:1/-1">عنوان پرونده
-                <input name="project_title" autocomplete="off" placeholder="مثلاً ارزیابی واردات پنل خورشیدی برای بازار ایران" />
-              </label>
-              <label class="field">سازمان / مجموعه
-                <input name="organization" autocomplete="organization" placeholder="نام شرکت، مجموعه یا تیم" />
-              </label>
-              <label class="field">هدف گزارش
-                <input name="report_purpose" autocomplete="off" placeholder="ارزیابی فرصت، مذاکره با تأمین‌کننده یا امکان‌سنجی" />
-              </label>
-              <label class="field">نام تهیه‌کننده گزارش
-                <input name="owner_fa" autocomplete="name" placeholder="نام و نام خانوادگی" />
-              </label>
-              <label class="field">نام انگلیسی تهیه‌کننده
-                <input name="owner_en" autocomplete="off" placeholder="Report Owner Name" />
-              </label>
-              <label class="field">ایمیل خریدار
-                <input name="buyer_email" type="email" autocomplete="email" placeholder="you@domain.com" />
-              </label>
-              <label class="field">شهر
-                <input name="buyer_city" autocomplete="off" value="Tehran, Iran" />
-              </label>
-            </div>
-          </div>
+              <div class="wizard-step" data-step="1">
+                <div class="section-head"><div><h2>۲ · مشخصات فنی و تجاری</h2><p class="muted" style="margin:2px 0 0">هرچه مشخصات کامل‌تر باشد، HS، تطابق محصول و RFQ دقیق‌تر است.</p></div></div>
+                <div class="grid2">
+                  <label class="field">مشخصات فنی اصلی <em>*</em>
+                    <input name="specs" id="specs" autocomplete="off" placeholder="ولتاژ، خلوص، جنس، گرید، ابعاد یا استاندارد محصول" />
+                    <small class="hint">توصیه: انگلیسی و دقیق</small>
+                  </label>
+                  <label class="field">مقدار تقریبی سفارش <em>*</em>
+                    <input name="qty_hint" id="qty_hint" autocomplete="off" placeholder="مثلاً one 20-foot container" />
+                  </label>
+                  <label class="field">کاربرد در ایران
+                    <input name="application" autocomplete="off" placeholder="نیروگاه، کارخانه، خرده‌فروشی" />
+                  </label>
+                  <label class="field">گرید / مدل / ظرفیت
+                    <input name="grade_model" autocomplete="off" placeholder="550W / Grade A" />
+                  </label>
+                  <label class="field">واحد خرید
+                    <input name="unit" autocomplete="off" placeholder="کیلوگرم / دستگاه" />
+                  </label>
+                  <label class="field">مشتری هدف در ایران
+                    <input name="target_customer" autocomplete="off" placeholder="عمده‌فروش، کارخانه، کلینیک" />
+                  </label>
+                  <label class="field">ترجیح کشور مبدأ
+                    <input name="origin_pref" autocomplete="off" placeholder="چین / ترکیه / هند / اروپا" />
+                  </label>
+                </div>
+              </div>
 
-          <div class="run-banner">
-            <div>
-              <h3>شروع تحلیل و تشکیل پرونده</h3>
-              <p>تحلیل چندمرحله‌ای و قابل ممیزی. خروجی Word، اکسل، RFQ و روش‌شناسی. اگر شواهد کافی نباشد، کمبود صریح گزارش می‌شود و Supplier ساختگی تولید نمی‌شود.</p>
+              <div class="wizard-step" data-step="2">
+                <div class="section-head"><div><h2>۳ · خریدار و هویت گزارش</h2><p class="muted" style="margin:2px 0 0">در گزارش مدیریتی و مکاتبات RFQ استفاده می‌شود.</p></div></div>
+                <div class="grid2">
+                  <label class="field" style="grid-column:1/-1">عنوان پرونده
+                    <input name="project_title" autocomplete="off" placeholder="مثلاً ارزیابی واردات پنل خورشیدی برای بازار ایران" />
+                  </label>
+                  <label class="field">سازمان / مجموعه
+                    <input name="organization" autocomplete="organization" placeholder="نام شرکت، مجموعه یا تیم" />
+                  </label>
+                  <label class="field">هدف گزارش
+                    <input name="report_purpose" autocomplete="off" placeholder="ارزیابی فرصت، مذاکره یا امکان‌سنجی" />
+                  </label>
+                  <label class="field">نام تهیه‌کننده گزارش
+                    <input name="owner_fa" autocomplete="name" placeholder="نام و نام خانوادگی" />
+                  </label>
+                  <label class="field">نام انگلیسی تهیه‌کننده
+                    <input name="owner_en" autocomplete="off" placeholder="Report Owner Name" />
+                  </label>
+                  <label class="field">ایمیل خریدار
+                    <input name="buyer_email" type="email" autocomplete="email" placeholder="you@domain.com" />
+                  </label>
+                  <label class="field">شهر
+                    <input name="buyer_city" autocomplete="off" value="Tehran, Iran" />
+                  </label>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="3">
+                <div class="section-head"><div><h2>۴ · مرور و تأیید</h2><p class="muted" style="margin:2px 0 0">مشخصات را بازبینی کنید؛ برای شروع تحلیل، دکمه را بزنید.</p></div></div>
+                <div id="reviewBox"></div>
+                <div class="notice amber" style="margin-top:8px"><strong>نکته</strong>اگر شواهد کافی یافت نشود، تجارت‌یار صادقانه «آماده نیست» را گزارش می‌کند و Supplier جعلی نمی‌سازد.</div>
+              </div>
+
             </div>
-            <button type="submit" id="runBtn" class="btn btn-primary" style="padding:14px 22px;font-size:15px">شروع تحلیل ←</button>
+            <div class="wizard-nav">
+              <button type="button" class="btn" id="prevBtn">→ قبلی</button>
+              <button type="button" class="btn btn-primary" id="nextBtn">ادامه ←</button>
+            </div>
           </div>
         </form>
       </section>
@@ -192,23 +197,10 @@
         </div>
       </section>
 
-      <!-- ================= Result view ================= -->
+      <!-- ================= Report result ================= -->
       <section id="view-result" class="view">
-        <div class="tabs" id="tabs">
-          <button data-tab="overview" class="on">خلاصه</button>
-          <button data-tab="s1">۱. محصول</button>
-          <button data-tab="s2">۲. بازار</button>
-          <button data-tab="s3">۳. Longlist</button>
-          <button data-tab="s4">۴. امتیاز</button>
-          <button data-tab="s5">۵. اعتبارسنجی</button>
-          <button data-tab="compare">مقایسه</button>
-          <button data-tab="s6">۶. RFQ</button>
-          <button data-tab="s7">۷. تصمیم</button>
-          <button data-tab="tools">ابزارها</button>
-          <button data-tab="cost">Landed Cost</button>
-          <button data-tab="src">منابع</button>
-        </div>
-        <div id="resultMount"></div>
+        <nav class="report-nav" id="reportNav"></nav>
+        <div id="reportMount"></div>
         <div class="no-print" style="margin-top:6px">
           <button class="btn" id="resetBtn">＋ ایجاد پرونده جدید</button>
         </div>
@@ -217,6 +209,6 @@
   </div>
 
   <div id="toasts"></div>
-  <script src="/static/app.js?v=10"></script>
+  <script src="/static/app.js?v=11"></script>
 </body>
 </html>

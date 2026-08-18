@@ -17,8 +17,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl.formatting.rule import ColorScaleRule
 from openpyxl.worksheet.hyperlink import Hyperlink
 
-NAVY = RGBColor(0x0F, 0x27, 0x44)
-BLUE = RGBColor(0x0B, 0x5C, 0xAB)
+NAVY = RGBColor(0x0B, 0x4F, 0x3A)
+BLUE = RGBColor(0x0F, 0x94, 0x88)
 GOLD = RGBColor(0xB7, 0x79, 0x1F)
 DARK = RGBColor(0x1A, 0x1A, 0x1A)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
@@ -105,7 +105,7 @@ def _table(doc, headers, rows, col_w=None, rtl=True):
     tbl.style = "Table Grid"
     tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     for i, h in enumerate(headers):
-        _cell(tbl.rows[0].cells[i], h, bold=True, color=WHITE, size=10, fill="0F2744", rtl=rtl)
+        _cell(tbl.rows[0].cells[i], h, bold=True, color=WHITE, size=10, fill="0B4F3A", rtl=rtl)
     for r_i, row in enumerate(rows, 1):
         fill = "F4F7FB" if r_i % 2 == 0 else "FFFFFF"
         for c_i in range(cols):
@@ -124,7 +124,7 @@ def _kv_table(doc, pairs):
     tbl.style = "Table Grid"
     for i, (k, v) in enumerate(pairs):
         fill = "EEF2F6" if i % 2 == 0 else "FFFFFF"
-        _cell(tbl.rows[i].cells[0], k, bold=True, color=NAVY, size=10, fill="E7F1FB")
+        _cell(tbl.rows[i].cells[0], k, bold=True, color=NAVY, size=10, fill="E2F4F1")
         _cell(tbl.rows[i].cells[1], v, size=10, fill=fill)
         tbl.rows[i].cells[0].width = Cm(4.6)
         tbl.rows[i].cells[1].width = Cm(12.2)
@@ -658,11 +658,11 @@ def build_xlsx(dossier: dict, out_dir: Path) -> Path:
         top=Side(style="thin", color="C5D0DC"),
         bottom=Side(style="thin", color="C5D0DC"),
     )
-    head_fill = PatternFill("solid", fgColor="0F2744")
+    head_fill = PatternFill("solid", fgColor="0B4F3A")
     head_font = Font(color="FFFFFF", bold=True, name="Calibri", size=11)
     zebra = PatternFill("solid", fgColor="F4F7FB")
     wrap = Alignment(wrap_text=True, vertical="top", readingOrder=2)
-    link_font = Font(name="Calibri", size=10, color="0B5CAB", underline="single")
+    link_font = Font(name="Calibri", size=10, color="0F9488", underline="single")
 
     def sheet(title, headers, rows, widths=None, url_cols=None):
         ws = wb.create_sheet(title)
@@ -701,7 +701,7 @@ def build_xlsx(dossier: dict, out_dir: Path) -> Path:
     cover.title = "00_راهنما"
     cover.sheet_view.rightToLeft = True
     cover["A1"] = "تجارت‌یار — پرونده حرفه‌ای تصمیم‌گیری واردات"
-    cover["A1"].font = Font(name="Calibri", size=18, bold=True, color="0F2744")
+    cover["A1"].font = Font(name="Calibri", size=18, bold=True, color="0B4F3A")
     guide = [
         ("عنوان پرونده", m.get("project_title")),
         ("تهیه‌کننده گزارش", m["owner_fa"]),
@@ -730,7 +730,7 @@ def build_xlsx(dossier: dict, out_dir: Path) -> Path:
     for i, (k, v) in enumerate(guide, 3):
         cover[f"A{i}"] = k
         cover[f"B{i}"] = v
-        cover[f"A{i}"].font = Font(bold=True, color="0B5CAB")
+        cover[f"A{i}"].font = Font(bold=True, color="0F9488")
         cover[f"B{i}"].alignment = Alignment(wrap_text=True)
     cover.column_dimensions["A"].width = 24
     cover.column_dimensions["B"].width = 78
@@ -898,7 +898,7 @@ def build_xlsx(dossier: dict, out_dir: Path) -> Path:
     lc = wb.create_sheet("12_Landed_Cost")
     lc.sheet_view.rightToLeft = True
     lc["A1"] = "قالب سناریوی Landed Cost — فقط با Quote و نرخ‌های رسمی تکمیل شود"
-    lc["A1"].font = Font(name="Calibri", size=14, bold=True, color="0F2744")
+    lc["A1"].font = Font(name="Calibri", size=14, bold=True, color="0B4F3A")
     lc.merge_cells("A1:D1")
     lc_rows = [
         ("تأمین‌کننده", "", "INPUT REQUIRED", "نام گزینه و منبع Quote"),

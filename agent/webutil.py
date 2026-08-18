@@ -95,50 +95,76 @@ def _is_public_http_url(url: str) -> bool:
         return False
 
 
-def search(query: str, max_results: int = 8, region: str = "wt-wt", backend: str | None = None) -> list[dict[str, Any]]:
-    """Search the public web through the open-source ddgs client.
+# ddgs v9 supports several DDG text backends.  We try them in order so that if
+# one engine is blocked/rate-limited another can still return leads.
+TEXT_BACKENDS = [
+    "mullvad_google", "google", "brave", "bing", "mojeek", "yahoo", "mullvad_brave",
+]
 
-    The returned rows are discovery leads, not verified evidence.  Stages must
-    apply relevance/identity gates before adding them to Source Log.
+
+def _normalize_hit(hit: dict, query: str, engine: str) -> dict | None:
+    url = ex.canonical_url(hit.get("href") or hit.get("url") or "")
+    if not url or not _is_public_http_url(url):
+        return None
+    grade, source_type = source_authority(url)
+    return {
+        "title": re.sub(r"\s+", " ", (hit.get("title") or "")).strip()[:240],
+        "url": url,
+        "snippet": re.sub(r"\s+", " ", (hit.get("body") or hit.get("description") or "")).strip()[:1000],
+        "query": query.strip(),
+        "checked_on": TODAY,
+        "retrieved_at": now_iso(),
+        "domain": domain_of(url),
+        "sid": source_id(url),
+        "search_provider": "ddgs/multi-engine web search",
+        "search_engine": engine,
+        "authority_grade": grade,
+        "source_type": source_type,
+    }
+
+
+def _ddg_text_once(query: str, max_results: int, region: str, backend: str) -> list[dict]:
+    with _ddg_lock:
+        with DDGS(timeout=9) as ddg:
+            hits = ddg.text(
+                query.strip(),
+                max_results=max_results,
+                region=region,
+                safesearch="moderate",
+                backend=backend,
+            )
+            return list(hits or [])
+
+
+def search(query: str, max_results: int = 8, region: str = "wt-wt", backend: str | None = None) -> list[dict[str, Any]]:
+    """Search the public web through the open-source ddgs client with engine fallback.
+
+    Tries a prioritized list of engines so a single blocked engine cannot fail
+    the whole discovery step.  Returned rows are discovery leads, not verified
+    evidence — stages must apply relevance/identity gates before Source Log.
     """
     rows: list[dict[str, Any]] = []
     if not query or not query.strip():
         return rows
-    last_err: Exception | None = None
-    for attempt in range(3):
+    engines = [backend] if backend else TEXT_BACKENDS
+    seen: set[str] = set()
+    for engine in engines:
         try:
-            kwargs: dict[str, Any] = {"max_results": max_results, "region": region, "safesearch": "moderate"}
-            if backend:
-                kwargs["backend"] = backend
-            with _ddg_lock:
-                with DDGS() as ddg:
-                    hits = list(ddg.text(query.strip(), **kwargs))
-            seen: set[str] = set()
-            for hit in hits:
-                url = ex.canonical_url(hit.get("href") or hit.get("url") or "")
-                if not url or not _is_public_http_url(url) or url in seen:
-                    continue
-                seen.add(url)
-                grade, source_type = source_authority(url)
-                rows.append({
-                    "title": re.sub(r"\s+", " ", (hit.get("title") or "")).strip()[:240],
-                    "url": url,
-                    "snippet": re.sub(r"\s+", " ", (hit.get("body") or hit.get("description") or "")).strip()[:1000],
-                    "query": query.strip(),
-                    "checked_on": TODAY,
-                    "retrieved_at": now_iso(),
-                    "domain": domain_of(url),
-                    "sid": source_id(url),
-                    "search_provider": "ddgs/public web search",
-                    "authority_grade": grade,
-                    "source_type": source_type,
-                })
-            return rows
-        except Exception as exc:
-            last_err = exc
-            time.sleep(0.7 * (attempt + 1))
-    # Search errors are tool-log events, never evidence/source rows.
-    return []
+            hits = _ddg_text_once(query, max_results, region, engine)
+        except Exception:
+            time.sleep(0.25)
+            continue
+        for hit in hits:
+            row = _normalize_hit(hit, query, engine)
+            if not row:
+                continue
+            if row["url"] in seen:
+                continue
+            seen.add(row["url"])
+            rows.append(row)
+        if len(rows) >= max_results:
+            break
+    return rows[:max_results * 2]
 
 
 def search_many(queries: list[str], max_results: int = 6, workers: int = 4, backend: str | None = None) -> list[dict[str, Any]]:

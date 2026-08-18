@@ -14,9 +14,9 @@ from . import webutil as web
 
 CATALOG: dict[str, dict[str, str]] = {
     "public_web_search": {
-        "name": "Public web search (ddgs)",
+        "name": "Multi-engine public web search (ddgs)",
         "role": "کشف منابع، صفحات محصول و سرنخ‌های تأمین‌کننده",
-        "method": "پرس‌وجوی وب عمومی با کتابخانه ddgs؛ نتیجه جستجو تا عبور از فیلترها منبع پذیرفته‌شده نیست.",
+        "method": "جستجوی وب عمومی با کتابخانه ddgs از چند موتور (Google/Brave/Bing/Mojeek/Yahoo) با بازگشت خودکار؛ نتیجه خام تا عبور از فیلترها منبع پذیرفته‌شده نیست.",
     },
     "targeted_site_search": {
         "name": "Targeted site search",
