@@ -1,0 +1,5 @@
+{
+  "platform": "flask",
+  "app": "tejaratyar",
+  "port": 80
+}

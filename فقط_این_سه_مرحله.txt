@@ -1,0 +1,37 @@
+راه‌اندازی مخزن جدید تجارت‌یار — فقط سه مرحله
+================================================
+
+مرحله ۱
+به این آدرس برو:
+https://github.com/new
+
+Repository name را دقیقاً بنویس:
+tejaratyar
+
+گزینه Public را انتخاب کن و Create repository را بزن.
+README، License و gitignore را از داخل GitHub اضافه نکن؛ همه آن‌ها در بسته آماده هستند.
+
+
+مرحله ۲
+فایل TejaratYar_Repo_Ready.zip را Extract کن.
+پوشه tejaratyar را باز کن.
+تمام فایل‌ها و پوشه‌های داخل آن را انتخاب کن و در صفحه Repository جدید روی:
+Add file → Upload files
+بکش و رها کن.
+
+سپس پایین صفحه روی Commit changes بزن.
+
+مهم: خود فایل ZIP را داخل GitHub نگذار. محتویات پوشه Extract‌شده را آپلود کن.
+
+
+مرحله ۳
+در Repository روی فایل TejaratYar.ipynb کلیک کن.
+گزینه Open in Colab را بزن؛ اگر نمایش داده نشد، فایل را دانلود و در colab.research.google.com باز کن.
+سپس:
+Runtime → Run all
+
+تمام. لینک trycloudflare به‌صورت خودکار ساخته می‌شود.
+
+هیچ آدرس یا خطی داخل Notebook نیاز به تغییر ندارد.
+Notebook از قبل برای این مخزن تنظیم شده است:
+https://github.com/Setayesh-Jafari/tejaratyar
