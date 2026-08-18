@@ -64,7 +64,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(dossier["sourcing"]["longlist"], [])
         self.assertEqual(dossier["decision"]["recommendation_status"], "not_ready")
         self.assertEqual(dossier["meta"]["developer_en"], "Setayesh Jafari")
-        self.assertEqual(dossier["meta"]["agent_version"], "3.0-professional")
+        self.assertEqual(dossier["meta"]["agent_version"], "4.0-trade-ready")
         self.assertNotIn("course", dossier["meta"])
         self.assertNotIn("student_fa", dossier["meta"])
         with tempfile.TemporaryDirectory() as td:

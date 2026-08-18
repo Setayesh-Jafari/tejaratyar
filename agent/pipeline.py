@@ -1185,7 +1185,7 @@ def run_pipeline(inp: dict, emit: Emit) -> dict:
             "platform": "تجارت‌یار — سامانه هوشمند تصمیم‌یار تجارت بین‌الملل",
             "developer_fa": "ستایش جعفری",
             "developer_en": "Setayesh Jafari",
-            "generated_on": TODAY, "agent_version": "3.0-professional",
+            "generated_on": TODAY, "agent_version": "4.0-trade-ready",
             "product_fa": brief["name_fa"], "product_en": brief["name_en"],
         },
         "input": inp, "brief": brief, "market": market, "sourcing": sourcing,

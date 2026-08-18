@@ -33,6 +33,17 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(job["input"]["owner_fa"], "")
         self.assertEqual(job["input"]["owner_en"], "")
 
+    def test_token_also_accepted_via_header(self):
+        payload = {"product_fa": "کالای هدر", "product_en": "Header widget", "specs": "12V", "qty_hint": "5 units"}
+        with patch("threading.Thread.start", return_value=None):
+            response = self.client.post("/api/run", json=payload)
+        data = response.get_json()
+        self.created.append(data["job_id"])
+        allowed = self.client.get(f"/api/job/{data['job_id']}", headers={"X-Job-Token": data["access_token"]})
+        self.assertEqual(allowed.status_code, 200)
+        denied = self.client.get(f"/api/job/{data['job_id']}", headers={"X-Job-Token": "wrong"})
+        self.assertEqual(denied.status_code, 403)
+
     def test_missing_product_rejected(self):
         response = self.client.post("/api/run", json={})
         self.assertEqual(response.status_code, 400)
