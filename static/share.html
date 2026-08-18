@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>راهنمای استقرار تجارت‌یار</title>
+  <style>
+    body{margin:0;background:#f3f6fa;color:#102033;font-family:Tahoma,Arial,sans-serif;line-height:1.9}
+    main{max-width:900px;margin:40px auto;padding:0 18px}.card{background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:22px;margin-bottom:14px;box-shadow:0 12px 30px -24px #0b1c33}
+    h1,h2{color:#0b1c33}.code{direction:ltr;text-align:left;background:#0b1c33;color:#dbeafe;padding:14px;border-radius:12px;overflow:auto}a{color:#0369a1}.brand{color:#0284c7;font-weight:800}
+  </style>
+</head>
+<body><main>
+  <section class="card"><div class="brand">TejaratYar Deployment Guide</div><h1>راهنمای استقرار تجارت‌یار</h1><p>طراحی و توسعه: <strong>ستایش جعفری</strong></p></section>
+  <section class="card"><h2>اجرای Colab</h2><p>فایل <code>TejaratYar.ipynb</code> را باز و Runtime → Run all را اجرا کنید. لینک trycloudflare تا زمان روشن‌بودن Runtime فعال است.</p></section>
+  <section class="card"><h2>اجرای Docker</h2><pre class="code">docker build -t tejaratyar .
+docker run --rm -p 7860:7860 tejaratyar</pre></section>
+  <section class="card"><h2>اجرای محلی</h2><pre class="code">python -m pip install -r requirements.txt
+python app.py</pre><p>سپس <a href="http://127.0.0.1:5000">http://127.0.0.1:5000</a> را باز کنید.</p></section>
+  <section class="card"><h2>نکته امنیتی</h2><p>فایل <code>.env</code>، کلید API، توکن و رمز را در مخزن عمومی قرار ندهید. فایل <code>.env.example</code> فقط نام تنظیمات غیرمحرمانه را نشان می‌دهد.</p></section>
+</main></body></html>
