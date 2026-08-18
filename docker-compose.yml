@@ -1,0 +1,28 @@
+# TejaratYar — self-hosted permanent deployment with Docker
+#   docker compose up -d --build
+# App: http://localhost:8000   (change ports.left as you like)
+services:
+  tejaratyar:
+    build: .
+    image: tejaratyar:latest
+    container_name: tejaratyar
+    restart: unless-stopped
+    ports:
+      - "8000:7860"
+    environment:
+      PORT: "7860"
+      DATA_DIR: /data
+      APP_TIMEZONE: Asia/Tehran
+      MAX_ACTIVE_JOBS: "3"
+      JOB_TTL_HOURS: "24"
+    volumes:
+      - tejaratyar_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:7860/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  tejaratyar_data:

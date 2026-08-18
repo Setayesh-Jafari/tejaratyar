@@ -1,0 +1,24 @@
+# Git / VCS
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Runtime data — never baked into the image; mount a volume instead
+jobs/
+outputs/
+*.log
+
+# Local env & editor
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# Notebooks / docs not needed at runtime (image stays small)
+.ipynb_checkpoints/

@@ -75,17 +75,26 @@ http://127.0.0.1:5000
 
 ```text
 PORT=5000
+DATA_DIR=             # ریشه ذخیره jobs/outputs؛ در استقرار دائمی روی دیسک سوار شود
 MAX_ACTIVE_JOBS=3
 JOB_TTL_HOURS=24
 APP_TIMEZONE=Asia/Tehran
 ```
 
-## استقرار با Docker
+## استقرار دائمی (Render / Docker)
 
+راهنمای کامل و گام‌به‌گام در فایل `راهنمای_استقرار_دائمی.md` آمده است.
+
+**Render (ساده‌ترین):** از Blueprint موجود (`render.yaml`) با دیسک دائمی `/data` و Health Check روی `/health` استفاده کنید. ⚠️ دیسک دائمی به پلن پولی نیاز دارد.
+
+**Docker روی سرور خودتان:**
 ```bash
-docker build -t tejaratyar .
-docker run --rm -p 7860:7860 tejaratyar
+docker compose up -d --build
+# سپس باز کنید: http://YOUR_SERVER:8000
 ```
+
+فایل‌های استقرار: `Dockerfile`، `docker-entrypoint.sh`، `render.yaml`، `docker-compose.yml`، `.dockerignore`.
+نکتهٔ مهم: سرور باید **تک‌پردازه** بماند (`--workers 1` با چند thread) چون پرونده‌ها در حافظهٔ همان پردازه پیگیری می‌شوند.
 
 ## روش تحقیق
 
