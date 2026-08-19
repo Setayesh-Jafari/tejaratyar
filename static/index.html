@@ -3,242 +3,212 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="تجارت‌یار — سامانه هوشمند و شواهدمحور تصمیم‌گیری واردات، تأمین‌کننده‌یابی و اعتبارسنجی" />
   <title>تجارت‌یار — سامانه هوشمند تصمیم‌یار واردات</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ["Vazirmatn", "Tahoma", "Segoe UI", "sans-serif"] },
-          colors: {
-            ink: "#102033",
-            navy: "#0b1c33",
-            mist: "#f3f6fa",
-            line: "#d9e2ec",
-          },
-          boxShadow: {
-            card: "0 10px 30px -18px rgba(11,28,51,.35)",
-            lift: "0 18px 40px -20px rgba(11,92,171,.45)",
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="/static/styles.css?v=8" />
+  <link rel="stylesheet" href="/static/styles.css?v=11" />
 </head>
-<body class="min-h-screen bg-mist text-ink font-sans antialiased lg:grid lg:grid-cols-[280px_1fr]">
-  <div class="pointer-events-none fixed inset-0 -z-10">
-    <div class="absolute -top-24 -left-16 h-80 w-80 rounded-full bg-sky-200/50 blur-3xl"></div>
-    <div class="absolute top-1/3 -right-20 h-96 w-96 rounded-full bg-indigo-200/40 blur-3xl"></div>
+<body>
+  <div class="app">
+    <!-- ================= Sidebar ================= -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo">TY</div>
+        <div>
+          <div class="name">تجارت‌یار</div>
+          <div class="tag">Trade Decision Intelligence</div>
+          <span class="version">v4.1 PREMIUM</span>
+        </div>
+      </div>
+
+      <nav class="steps" id="stageNav">
+        <div class="sec-label">مراحل پرونده</div>
+        <div class="step" data-stage="form"><i class="num">۰</i><div><b>تعریف پرونده</b><em>Project Intake</em></div></div>
+        <div class="step" data-stage="stage1"><i class="num">۱</i><div><b>تعریف محصول</b><em>Product Brief</em></div></div>
+        <div class="step" data-stage="stage2"><i class="num">۲</i><div><b>بازار ایران</b><em>فرصت واردات</em></div></div>
+        <div class="step" data-stage="stage3"><i class="num">۳</i><div><b>تأمین‌کننده‌یابی</b><em>حداقل ۲۰ شرکت</em></div></div>
+        <div class="step" data-stage="stage4"><i class="num">۴</i><div><b>غربالگری</b><em>امتیاز ۱۰۰</em></div></div>
+        <div class="step" data-stage="stage5"><i class="num">۵</i><div><b>اعتبارسنجی</b><em>Due Diligence</em></div></div>
+        <div class="step" data-stage="stage6"><i class="num">۶</i><div><b>ایمیل RFQ</b><em>شخصی‌سازی</em></div></div>
+        <div class="step" data-stage="stage7"><i class="num">۷</i><div><b>انتخاب نهایی</b><em>گزینه اول و دوم</em></div></div>
+      </nav>
+
+      <div class="foot">
+        <div class="resume-card" id="resumeCard" hidden>
+          <b>پرونده قبلی در دسترس است</b>
+          <button class="btn btn-gold btn-sm" id="resumeBtn" style="width:100%">ادامه پرونده قبلی</button>
+        </div>
+        <div class="credit">
+          <div class="logo">س‌ج</div>
+          <div>
+            <div class="name">ستایش جعفری</div>
+            <div class="tag">Import &amp; Trade Automation</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ================= Main ================= -->
+    <main class="main">
+      <header class="page-top">
+        <div>
+          <p class="kicker">سامانه هوشمند تجارت بین‌الملل</p>
+          <h1 id="pageTitle">ایجاد پرونده ارزیابی واردات</h1>
+          <p class="sub" id="pageSub">مشخصات تجاری را وارد کنید؛ تجارت‌یار منابع، تأمین‌کنندگان، ریسک‌ها و خروجی‌های تصمیم‌گیری را تحلیل می‌کند.</p>
+        </div>
+        <div class="top-actions" id="downloadBar" hidden>
+          <button class="btn btn-soft" id="dlReport">📄 گزارش تصمیم‌گیری</button>
+          <button class="btn btn-soft" id="dlExcel">📊 Workbook</button>
+          <button class="btn btn-soft" id="dlRfq">✉️ بسته RFQ</button>
+          <button class="btn btn-soft" id="dlPrompts">🧠 روش‌شناسی</button>
+          <button class="btn btn-gold" id="printBtn">🖨️ چاپ خلاصه</button>
+        </div>
+      </header>
+
+      <section class="cap-grid" id="capabilityGrid">
+        <div class="cap"><div class="ic">E</div><div><strong>Evidence-first</strong><small>هر ادعا به منبع و تاریخ بررسی متصل می‌شود.</small></div></div>
+        <div class="cap"><div class="ic">R</div><div><strong>Entity Resolution</strong><small>نتیجه جستجو با شرکت واقعی اشتباه گرفته نمی‌شود.</small></div></div>
+        <div class="cap"><div class="ic">G</div><div><strong>Decision Gates</strong><small>گزینه ضعیف به‌اجبار وارد پیشنهاد نمی‌شود.</small></div></div>
+        <div class="cap"><div class="ic">X</div><div><strong>Executive Reports</strong><small>گزارش، Workbook، RFQ و روش‌شناسی.</small></div></div>
+      </section>
+
+      <!-- ================= Wizard intake ================= -->
+      <section id="view-form" class="view active">
+        <form id="intake" autocomplete="off" novalidate>
+          <div class="wizard">
+            <div class="wizard-bar" id="wizardBar"></div>
+            <div class="wizard-body">
+
+              <div class="wizard-step" data-step="0">
+                <div class="section-head"><div><h2>۱ · کالا و دسته</h2><p class="muted" style="margin:2px 0 0">یک سناریو را انتخاب یا مشخصات محصول خود را وارد کنید.</p></div></div>
+                <div class="chips" id="quickChips" style="margin-bottom:18px"></div>
+                <div class="grid2">
+                  <label class="field">نام فارسی کالا <em>*</em>
+                    <input name="product_fa" id="product_fa" autocomplete="off" placeholder="مثلاً پنل خورشیدی مونوکریستال" />
+                  </label>
+                  <label class="field">نام انگلیسی کالا <em>*</em>
+                    <input name="product_en" id="product_en" autocomplete="off" placeholder="Monocrystalline solar PV module" />
+                  </label>
+                  <label class="field" style="grid-column:1/-1">گروه محصول
+                    <select name="product_category">
+                      <option value="auto">تشخیص خودکار</option>
+                      <option value="agricultural_food">کشاورزی / غذای خام</option>
+                      <option value="processed_food">غذا / مکمل / ماده خوراکی فرآوری‌شده</option>
+                      <option value="medical_device">تجهیزات و ملزومات پزشکی</option>
+                      <option value="electrical_electronic">برقی / الکترونیکی / انرژی</option>
+                      <option value="machinery">ماشین‌آلات و تجهیزات صنعتی</option>
+                      <option value="chemical_material">مواد شیمیایی / پلیمری / فلزی / نساجی</option>
+                      <option value="automotive">خودرویی</option>
+                      <option value="general">عمومی</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="1">
+                <div class="section-head"><div><h2>۲ · مشخصات فنی و تجاری</h2><p class="muted" style="margin:2px 0 0">هرچه مشخصات کامل‌تر باشد، HS، تطابق محصول و RFQ دقیق‌تر است.</p></div></div>
+                <div class="grid2">
+                  <label class="field">مشخصات فنی اصلی <em>*</em>
+                    <input name="specs" id="specs" autocomplete="off" placeholder="ولتاژ، خلوص، جنس، گرید، ابعاد یا استاندارد محصول" />
+                    <small class="hint">توصیه: انگلیسی و دقیق</small>
+                  </label>
+                  <label class="field">مقدار تقریبی سفارش <em>*</em>
+                    <input name="qty_hint" id="qty_hint" autocomplete="off" placeholder="مثلاً one 20-foot container" />
+                  </label>
+                  <label class="field">کاربرد در ایران
+                    <input name="application" autocomplete="off" placeholder="نیروگاه، کارخانه، خرده‌فروشی" />
+                  </label>
+                  <label class="field">گرید / مدل / ظرفیت
+                    <input name="grade_model" autocomplete="off" placeholder="550W / Grade A" />
+                  </label>
+                  <label class="field">واحد خرید
+                    <input name="unit" autocomplete="off" placeholder="کیلوگرم / دستگاه" />
+                  </label>
+                  <label class="field">مشتری هدف در ایران
+                    <input name="target_customer" autocomplete="off" placeholder="عمده‌فروش، کارخانه، کلینیک" />
+                  </label>
+                  <label class="field">ترجیح کشور مبدأ
+                    <input name="origin_pref" autocomplete="off" placeholder="چین / ترکیه / هند / اروپا" />
+                  </label>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="2">
+                <div class="section-head"><div><h2>۳ · خریدار و هویت گزارش</h2><p class="muted" style="margin:2px 0 0">در گزارش مدیریتی و مکاتبات RFQ استفاده می‌شود.</p></div></div>
+                <div class="grid2">
+                  <label class="field" style="grid-column:1/-1">عنوان پرونده
+                    <input name="project_title" autocomplete="off" placeholder="مثلاً ارزیابی واردات پنل خورشیدی برای بازار ایران" />
+                  </label>
+                  <label class="field">سازمان / مجموعه
+                    <input name="organization" autocomplete="organization" placeholder="نام شرکت، مجموعه یا تیم" />
+                  </label>
+                  <label class="field">هدف گزارش
+                    <input name="report_purpose" autocomplete="off" placeholder="ارزیابی فرصت، مذاکره یا امکان‌سنجی" />
+                  </label>
+                  <label class="field">نام تهیه‌کننده گزارش
+                    <input name="owner_fa" autocomplete="name" placeholder="نام و نام خانوادگی" />
+                  </label>
+                  <label class="field">نام انگلیسی تهیه‌کننده
+                    <input name="owner_en" autocomplete="off" placeholder="Report Owner Name" />
+                  </label>
+                  <label class="field">ایمیل خریدار
+                    <input name="buyer_email" type="email" autocomplete="email" placeholder="you@domain.com" />
+                  </label>
+                  <label class="field">شهر
+                    <input name="buyer_city" autocomplete="off" value="Tehran, Iran" />
+                  </label>
+                </div>
+              </div>
+
+              <div class="wizard-step" data-step="3">
+                <div class="section-head"><div><h2>۴ · مرور و تأیید</h2><p class="muted" style="margin:2px 0 0">مشخصات را بازبینی کنید؛ برای شروع تحلیل، دکمه را بزنید.</p></div></div>
+                <div id="reviewBox"></div>
+                <div class="notice amber" style="margin-top:8px"><strong>نکته</strong>اگر شواهد کافی یافت نشود، تجارت‌یار صادقانه «آماده نیست» را گزارش می‌کند و Supplier جعلی نمی‌سازد.</div>
+              </div>
+
+            </div>
+            <div class="wizard-nav">
+              <button type="button" class="btn" id="prevBtn">→ قبلی</button>
+              <button type="button" class="btn btn-primary" id="nextBtn">ادامه ←</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= Run view ================= -->
+      <section id="view-run" class="view">
+        <div class="run-card">
+          <div class="run-top">
+            <div>
+              <strong id="runStatus">تجارت‌یار در حال تحلیل است</strong>
+              <div class="muted" id="runNow" style="margin-top:2px">آماده‌سازی موتور جستجو…</div>
+            </div>
+            <div class="pct" id="runPct">0%</div>
+          </div>
+          <div class="bar"><i id="runBar"></i></div>
+          <div class="timer-row">
+            <span>⏱ زمان سپری‌شده: <b id="elapsed">00:00</b></span>
+            <span>مرحله فعلی: <b id="currentStageLabel">شروع</b></span>
+          </div>
+          <div class="stage-track" id="stageTrack"></div>
+        </div>
+        <div class="card">
+          <div class="section-head"><div><h2>رویدادهای اجرای پرونده</h2></div></div>
+          <div class="log" id="logBox"></div>
+        </div>
+      </section>
+
+      <!-- ================= Report result ================= -->
+      <section id="view-result" class="view">
+        <nav class="report-nav" id="reportNav"></nav>
+        <div id="reportMount"></div>
+        <div class="no-print" style="margin-top:6px">
+          <button class="btn" id="resetBtn">＋ ایجاد پرونده جدید</button>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <aside class="relative bg-navy text-white lg:sticky lg:top-0 lg:h-screen flex flex-col gap-6 p-5 overflow-y-auto">
-    <div class="flex items-center gap-3">
-      <div class="h-11 w-11 rounded-2xl bg-gradient-to-br from-sky-400 to-blue-600 grid place-items-center shadow-lift font-black">TY</div>
-      <div>
-        <div class="text-base font-bold">تجارت‌یار</div>
-        <div class="text-xs text-slate-300">Trade Decision Intelligence</div>
-        <div class="version-badge">v3.0 PROFESSIONAL</div>
-      </div>
-    </div>
-
-    <div>
-      <p class="mb-2 px-2 text-[11px] uppercase tracking-wider text-slate-400">مراحل پرونده</p>
-      <ol class="stages space-y-1" id="stageNav">
-        <li data-stage="form" class="active"><i>۰</i><div><b>تعریف پرونده</b><em>Project Intake</em></div></li>
-        <li data-stage="stage1"><i>۱</i><div><b>تعریف محصول</b><em>Product Brief</em></div></li>
-        <li data-stage="stage2"><i>۲</i><div><b>بازار ایران</b><em>فرصت واردات</em></div></li>
-        <li data-stage="stage3"><i>۳</i><div><b>تأمین‌کننده‌یابی</b><em>حداقل ۲۰ شرکت</em></div></li>
-        <li data-stage="stage4"><i>۴</i><div><b>غربالگری</b><em>امتیاز ۱۰۰</em></div></li>
-        <li data-stage="stage5"><i>۵</i><div><b>اعتبارسنجی</b><em>Due Diligence</em></div></li>
-        <li data-stage="stage6"><i>۶</i><div><b>ایمیل RFQ</b><em>شخصی‌سازی</em></div></li>
-        <li data-stage="stage7"><i>۷</i><div><b>انتخاب نهایی</b><em>گزینه اول و دوم</em></div></li>
-      </ol>
-    </div>
-
-    <div class="mt-auto rounded-2xl bg-white/5 p-3 flex items-center gap-3 ring-1 ring-white/10">
-      <div class="h-10 w-10 rounded-full bg-sky-500 grid place-items-center text-xs font-bold">س‌ج</div>
-      <div class="min-w-0">
-        <div class="text-[11px] text-sky-200">طراحی و توسعه</div>
-        <div class="text-sm font-semibold" id="sideOwner">ستایش جعفری</div>
-        <div class="text-[11px] text-slate-400 truncate">Import & Trade Automation</div>
-      </div>
-    </div>
-  </aside>
-
-  <main class="px-4 py-6 sm:px-8 lg:px-10 pb-20 max-w-6xl">
-    <header class="top flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-7">
-      <div>
-        <p class="kicker text-sky-700 text-xs font-bold tracking-wide mb-1">سامانه هوشمند تجارت بین‌الملل</p>
-        <h1 id="pageTitle" class="text-3xl font-extrabold text-navy tracking-tight">ایجاد پرونده ارزیابی واردات</h1>
-        <p class="sub mt-2 text-slate-500 max-w-xl" id="pageSub">مشخصات تجاری را وارد کنید؛ تجارت‌یار منابع، تأمین‌کنندگان، ریسک‌ها و خروجی‌های تصمیم‌گیری را تحلیل می‌کند.</p>
-      </div>
-      <div class="top-actions flex flex-wrap gap-2" id="downloadBar" hidden>
-        <a class="btn-dl" id="dlReport" href="#">گزارش تصمیم‌گیری</a>
-        <a class="btn-dl" id="dlExcel" href="#">Workbook تحلیلی</a>
-        <a class="btn-dl" id="dlRfq" href="#">بسته RFQ</a>
-        <a class="btn-dl" id="dlPrompts" href="#">روش‌شناسی</a>
-      </div>
-    </header>
-
-    <section class="capability-grid" id="capabilityGrid">
-      <article><span>01</span><div><strong>Evidence-first</strong><small>هر ادعا به منبع و تاریخ بررسی متصل می‌شود.</small></div></article>
-      <article><span>02</span><div><strong>Entity Resolution</strong><small>نتیجه جستجو با شرکت واقعی اشتباه گرفته نمی‌شود.</small></div></article>
-      <article><span>03</span><div><strong>Decision Gates</strong><small>گزینه ضعیف به‌اجبار وارد پیشنهاد نهایی نمی‌شود.</small></div></article>
-      <article><span>04</span><div><strong>Executive Deliverables</strong><small>گزارش، Workbook تحلیلی، RFQ و روش‌شناسی.</small></div></article>
-    </section>
-
-    <section id="view-form" class="view active space-y-5">
-      <form id="intake" autocomplete="off" class="space-y-5">
-        <section class="rounded-3xl bg-white/80 backdrop-blur border border-white shadow-card p-5 sm:p-6">
-          <div class="mb-4">
-            <h3 class="text-lg font-bold text-navy">۱) سناریوهای نمونه</h3>
-            <p class="text-sm text-slate-500">برای دمو یک سناریو را انتخاب کنید یا پرونده اختصاصی بسازید.</p>
-          </div>
-          <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2.5" id="quickChips">
-            <button type="button" data-fa="پنل خورشیدی مونوکریستال" data-en="Monocrystalline solar PV module" data-app="نیروگاه خانگی و صنعتی کوچک" data-specs="550W, 144 cells, N-type" data-unit="وات / پالت" data-qty="یک کانتینر ۴۰ فوت">پنل خورشیدی</button>
-            <button type="button" data-fa="اینورتر خورشیدی متصل به شبکه" data-en="On-grid solar inverter" data-app="نیروگاه خورشیدی" data-specs="50kW three-phase" data-unit="دستگاه" data-qty="۱۰ دستگاه">اینورتر خورشیدی</button>
-            <button type="button" data-fa="دانه قهوه سبز عربیکا" data-en="Green Arabica coffee beans" data-app="برشته‌کاری و کافی‌شاپ" data-specs="Washed, screen 16+, moisture ≤12%" data-unit="کیسه ۶۰ کیلویی" data-qty="یک کانتینر ۲۰ فوت">قهوه سبز</button>
-            <button type="button" data-fa="چای سیاه سیلان" data-en="Ceylon black tea" data-app="بسته‌بندی و خرده‌فروشی" data-specs="Broken Orange Pekoe, Sri Lanka" data-unit="کیلوگرم" data-qty="۵ تن آزمایشی">چای سیاه</button>
-            <button type="button" data-fa="مکمل پروتئین وی کنسانتره" data-en="Whey protein concentrate" data-app="باشگاه و فروش آنلاین" data-specs="WPC 80%, instantized, unflavored" data-unit="کیسه ۲۵ کیلویی" data-qty="۵۰۰ کیلو">پروتئین وی</button>
-            <button type="button" data-fa="روغن ماهی امگا ۳" data-en="Fish oil omega-3 concentrate" data-app="مکمل و داروخانه" data-specs="18/12 EPA/DHA, molecular distilled" data-unit="کیلوگرم" data-qty="۳۰۰ کیلو">روغن ماهی</button>
-            <button type="button" data-fa="دستگاه سونوگرافی پرتابل" data-en="Portable ultrasound scanner" data-app="کلینیک و اورژانس" data-specs="Color Doppler, 2 probes" data-unit="دستگاه" data-qty="۵ دستگاه">سونوگرافی پرتابل</button>
-            <button type="button" data-fa="دستکش معاینه نیتریل" data-en="Nitrile examination gloves" data-app="بیمارستان و آزمایشگاه" data-specs="Powder-free, size M, CE" data-unit="کارتن" data-qty="۵۰ کارتن">دستکش نیتریل</button>
-            <button type="button" data-fa="دستگاه اسپرسو صنعتی دو گروپ" data-en="Commercial 2-group espresso machine" data-app="کافه و رستوران" data-specs="2 group, heat exchanger" data-unit="دستگاه" data-qty="۸ دستگاه">اسپرسو صنعتی</button>
-            <button type="button" data-fa="ورق فولادی گالوانیزه" data-en="Galvanized steel sheet" data-app="ساختمان و تولید" data-specs="DX51D, Z275, 0.5mm" data-unit="تن" data-qty="یک کانتینر">ورق گالوانیزه</button>
-            <button type="button" data-fa="تایر سواری رادیال" data-en="Passenger car radial tire" data-app="عمده‌فروشی لاستیک" data-specs="205/55R16, ECE" data-unit="حلقه" data-qty="۵۰۰ حلقه">تایر سواری</button>
-            <button type="button" data-fa="پارچه اسپان‌باند پزشکی" data-en="Medical PP spunbond nonwoven" data-app="تولید ماسک و گان" data-specs="SS 25gsm, hydrophilic" data-unit="کیلوگرم / رول" data-qty="۲ تن">اسپان‌باند پزشکی</button>
-          </div>
-        </section>
-
-        <section class="rounded-3xl bg-white/80 backdrop-blur border border-white shadow-card p-5 sm:p-6">
-          <div class="mb-4">
-            <h3 class="text-lg font-bold text-navy">۲) دامنه فنی و تجاری کالا</h3>
-            <p class="text-sm text-slate-500">فیلدهای ستاره‌دار حداقل اطلاعات لازم برای تحلیل قابل دفاع هستند.</p>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label class="field">نام فارسی کالا <em>*</em>
-              <input name="product_fa" id="product_fa" required autocomplete="off" placeholder="مثلاً پنل خورشیدی مونوکریستال" />
-            </label>
-            <label class="field">نام انگلیسی کالا <em>*</em>
-              <input name="product_en" id="product_en" required autocomplete="off" placeholder="Monocrystalline solar PV module" />
-            </label>
-            <label class="field">گروه محصول
-              <select name="product_category" class="form-select">
-                <option value="auto">تشخیص خودکار</option>
-                <option value="agricultural_food">کشاورزی / غذای خام</option>
-                <option value="processed_food">غذا / مکمل / ماده خوراکی فرآوری‌شده</option>
-                <option value="medical_device">تجهیزات و ملزومات پزشکی</option>
-                <option value="electrical_electronic">برقی / الکترونیکی / انرژی</option>
-                <option value="machinery">ماشین‌آلات و تجهیزات صنعتی</option>
-                <option value="chemical_material">مواد شیمیایی / پلیمری / فلزی / نساجی</option>
-                <option value="automotive">خودرویی</option>
-                <option value="general">عمومی</option>
-              </select>
-            </label>
-            <label class="field">کاربرد در ایران
-              <input name="application" autocomplete="off" placeholder="نیروگاه، کارخانه، خرده‌فروشی" />
-            </label>
-            <label class="field">گرید / مدل / ظرفیت
-              <input name="grade_model" autocomplete="off" placeholder="550W / Grade A" />
-            </label>
-            <label class="field md:col-span-2">مشخصات فنی اصلی <em>*</em>
-              <input name="specs" required autocomplete="off" placeholder="ولتاژ، خلوص، جنس، گرید، ابعاد یا استاندارد محصول" />
-            </label>
-            <label class="field">واحد خرید
-              <input name="unit" autocomplete="off" placeholder="کیلوگرم / دستگاه" />
-            </label>
-            <label class="field">مقدار تقریبی سفارش <em>*</em>
-              <input name="qty_hint" required autocomplete="off" placeholder="ترجیحاً انگلیسی؛ مثلاً one 20-foot container" />
-            </label>
-            <label class="field">مشتری هدف
-              <input name="target_customer" autocomplete="off" placeholder="عمده‌فروش، کارخانه، کلینیک" />
-            </label>
-            <label class="field">ترجیح کشور مبدأ
-              <input name="origin_pref" autocomplete="off" placeholder="چین / ترکیه / هند / اروپا" />
-            </label>
-          </div>
-        </section>
-
-        <section class="rounded-3xl bg-white/80 backdrop-blur border border-white shadow-card p-5 sm:p-6">
-          <div class="mb-4">
-            <h3 class="text-lg font-bold text-navy">۳) مالک پرونده و هویت گزارش</h3>
-            <p class="text-sm text-slate-500">این اطلاعات در گزارش مدیریتی و مکاتبات RFQ استفاده می‌شود.</p>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <label class="field md:col-span-2">عنوان پرونده
-              <input name="project_title" autocomplete="off" placeholder="مثلاً ارزیابی واردات پنل خورشیدی برای بازار ایران" />
-            </label>
-            <label class="field">سازمان / مجموعه
-              <input name="organization" autocomplete="organization" placeholder="نام شرکت، مجموعه یا تیم" />
-            </label>
-            <label class="field">هدف گزارش
-              <input name="report_purpose" autocomplete="off" placeholder="ارزیابی فرصت، مذاکره با تأمین‌کننده یا امکان‌سنجی" />
-            </label>
-            <label class="field">نام تهیه‌کننده گزارش
-              <input name="owner_fa" autocomplete="name" placeholder="نام و نام خانوادگی" />
-            </label>
-            <label class="field">نام انگلیسی تهیه‌کننده
-              <input name="owner_en" autocomplete="off" placeholder="Report Owner Name" />
-            </label>
-            <label class="field">ایمیل خریدار
-              <input name="buyer_email" type="email" autocomplete="email" placeholder="you@domain.com" />
-            </label>
-            <label class="field">شهر
-              <input name="buyer_city" autocomplete="off" value="Tehran, Iran" />
-            </label>
-          </div>
-        </section>
-
-        <div class="rounded-3xl bg-navy text-white p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 shadow-lift">
-          <button type="submit" id="runBtn" class="inline-flex items-center justify-center rounded-2xl bg-gradient-to-l from-sky-400 to-blue-600 px-6 py-3.5 text-base font-bold shadow-lg hover:brightness-110 disabled:opacity-60">
-            شروع تحلیل و تشکیل پرونده
-          </button>
-          <div class="text-sm text-slate-300">
-            <div class="font-semibold text-white">تحلیل چندمرحله‌ای و قابل ممیزی</div>
-            خروجی Word، اکسل، RFQ و روش‌شناسی؛ اگر شواهد کافی نباشد، کمبود صریح گزارش می‌شود و Supplier ساختگی تولید نمی‌شود.
-          </div>
-        </div>
-      </form>
-    </section>
-
-    <section id="view-run" class="view space-y-4">
-      <div class="rounded-3xl bg-white border border-white shadow-card p-6">
-        <div class="flex items-start justify-between gap-4 mb-3">
-          <div>
-            <strong id="runStatus" class="block text-lg text-navy">تجارت‌یار در حال تحلیل است</strong>
-            <p id="runNow" class="now mt-1 text-sky-700 font-semibold">آماده‌سازی موتور جستجو…</p>
-          </div>
-          <span class="pct rounded-2xl bg-sky-50 text-sky-800 font-black text-lg px-3 py-2" id="runPct">0%</span>
-        </div>
-        <div class="bar h-2.5 bg-slate-100 rounded-full overflow-hidden"><i id="runBar"></i></div>
-      </div>
-      <div class="rounded-3xl bg-white border border-white shadow-card p-5">
-        <h3 class="font-bold text-navy mb-3">رویدادهای اجرای پرونده</h3>
-        <div class="log" id="logBox"></div>
-      </div>
-    </section>
-
-    <section id="view-result" class="view">
-      <div class="tabs flex flex-wrap gap-2 mb-4" id="tabs">
-        <button data-tab="overview" class="on">خلاصه</button>
-        <button data-tab="s1">۱. محصول</button>
-        <button data-tab="s2">۲. بازار</button>
-        <button data-tab="s3">۳. Longlist</button>
-        <button data-tab="s4">۴. امتیاز</button>
-        <button data-tab="s5">۵. اعتبارسنجی</button>
-        <button data-tab="s6">۶. RFQ</button>
-        <button data-tab="s7">۷. تصمیم</button>
-        <button data-tab="tools">ابزارها</button>
-        <button data-tab="src">منابع</button>
-      </div>
-      <div id="resultMount"></div>
-      <div class="mt-4">
-        <button class="btn-dl" id="resetBtn">ایجاد پرونده جدید</button>
-      </div>
-    </section>
-  </main>
-
-  <script src="/static/app.js?v=8"></script>
+  <div id="toasts"></div>
+  <script src="/static/app.js?v=11"></script>
 </body>
 </html>

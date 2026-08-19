@@ -19,11 +19,16 @@ from agent.exports import export_all
 from agent.pipeline import run_pipeline
 
 ROOT = Path(__file__).resolve().parent
-JOBS_DIR = ROOT / "jobs"
-OUT_DIR = ROOT / "outputs"
 STATIC = ROOT / "static"
-JOBS_DIR.mkdir(exist_ok=True)
-OUT_DIR.mkdir(exist_ok=True)
+
+# Data lives outside the image so that a mounted persistent disk (Render disk,
+# Docker volume) can keep completed dossiers across restarts. Defaults to the
+# app dir for local development.
+DATA_DIR = Path(os.environ.get("DATA_DIR", str(ROOT))).resolve()
+JOBS_DIR = DATA_DIR / "jobs"
+OUT_DIR = DATA_DIR / "outputs"
+JOBS_DIR.mkdir(parents=True, exist_ok=True)
+OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 app = Flask(__name__, static_folder=str(STATIC), static_url_path="/static")
 app.config["MAX_CONTENT_LENGTH"] = 64 * 1024
@@ -248,7 +253,14 @@ def api_file(job_id: str, kind: str):
 
 @app.get("/health")
 def health():
-    return jsonify({"ok": True, "service": "tejaratyar", "version": "3.0-professional", "developer": "Setayesh Jafari"})
+    # A persistent deployment must confirm the data directory is writable so a
+    # missing/read-only disk is surfaced by the platform's health check.
+    storage_ok = os.access(DATA_DIR, os.W_OK) and os.access(JOBS_DIR, os.W_OK)
+    return jsonify({
+        "ok": True, "service": "tejaratyar", "version": "4.1-premium",
+        "developer": "Setayesh Jafari", "storage": "ok" if storage_ok else "readonly",
+        "data_dir": str(DATA_DIR),
+    })
 
 
 if __name__ == "__main__":

@@ -1161,6 +1161,52 @@ def _quality_assurance(dossier: dict) -> dict[str, Any]:
     return {"status": "ready_for_expert_review" if critical_pass else "conditional_not_ready", "checks": checks, "passed": sum(1 for c in checks if c["passed"]), "total": len(checks)}
 
 
+def _build_readiness(dossier: dict) -> dict[str, Any]:
+    """Aggregate a 0-100 readiness score and per-stage breakdown for the hero UI."""
+    brief = dossier["brief"]; market = dossier["market"]
+    sourcing = dossier["sourcing"]; scoring = dossier["scoring"]
+    decision = dossier["decision"]; qa = dossier["quality_assurance"]
+    ll = len(sourcing.get("longlist") or []); top5 = len(scoring.get("top5") or [])
+    src = len(dossier.get("sources") or [])
+    ev = len(market.get("imported_evidence") or [])
+    hs = 1 if brief.get("hs_primary") else 0
+
+    def clamp(n, lo=0, hi=1): return max(lo, min(hi, n))
+    input_q = (brief.get("input_quality") or {}).get("score", 0) / 100
+    stage = {
+        "product": {"label": "تعریف محصول", "score": round(clamp(0.55 * input_q + 0.45 * hs) * 100)},
+        "market": {"label": "بازار ایران", "score": round(clamp(min(1, ev / 3)) * 100)},
+        "sourcing": {"label": "تأمین‌کننده‌یابی", "score": round(clamp(min(1, ll / 20)) * 100)},
+        "scoring": {"label": "غربالگری", "score": round(clamp(min(1, top5 / 5)) * 100)},
+        "diligence": {"label": "اعتبارسنجی", "score": round(clamp(min(1, top5 / 5)) * 100)},
+        "decision": {
+            "label": "انتخاب نهایی",
+            "score": 100 if decision.get("recommendation_status") == "ready_for_initial_negotiation"
+            else 55 if decision.get("recommendation_status") == "only_one_qualified" else 25,
+        },
+    }
+    weights = {"product": 0.16, "market": 0.14, "sourcing": 0.24, "scoring": 0.18, "diligence": 0.18, "decision": 0.10}
+    readiness = round(sum(stage[k]["score"] * weights[k] for k in weights))
+    if readiness >= 80: label, tone = "آماده برای بررسی مذاکره", "ready"
+    elif readiness >= 55: label, tone = "در مسیر آمادگی", "partial"
+    else: label, tone = "نیازمند تکمیل شواهد", "early"
+    return {
+        "score": readiness, "label": label, "tone": tone,
+        "stages": stage,
+        "metrics": {
+            "longlist": ll, "shortlist": top5, "sources": src,
+            "market_evidence": ev, "input_quality": round(input_q * 100),
+            "hs_confirmed": bool(hs), "qa_passed": qa.get("passed", 0), "qa_total": qa.get("total", 0),
+        },
+        "highlights": [
+            f"{ll} تأمین‌کننده در Longlist",
+            f"{top5} گزینه در Shortlist",
+            f"{src} منبع قابل ردیابی",
+            f"HS: {brief.get('hs_primary') or 'در انتظار تأیید'}",
+        ],
+    }
+
+
 # ---------------------------------------------------------------------------
 # Orchestrator
 # ---------------------------------------------------------------------------
@@ -1185,7 +1231,7 @@ def run_pipeline(inp: dict, emit: Emit) -> dict:
             "platform": "تجارت‌یار — سامانه هوشمند تصمیم‌یار تجارت بین‌الملل",
             "developer_fa": "ستایش جعفری",
             "developer_en": "Setayesh Jafari",
-            "generated_on": TODAY, "agent_version": "3.0-professional",
+            "generated_on": TODAY, "agent_version": "4.1-premium",
             "product_fa": brief["name_fa"], "product_en": brief["name_en"],
         },
         "input": inp, "brief": brief, "market": market, "sourcing": sourcing,
@@ -1194,5 +1240,6 @@ def run_pipeline(inp: dict, emit: Emit) -> dict:
         "prompt_log": PROMPT_LIBRARY,
     }
     dossier["quality_assurance"] = _quality_assurance(dossier)
-    emit("done", f"۷ مرحله تمام شد | QA: {dossier['quality_assurance']['status']} | ساخت فایل‌ها…", None)
+    dossier["summary"] = _build_readiness(dossier)
+    emit("done", f"۷ مرحله تمام شد | QA: {dossier['quality_assurance']['status']} | آمادگی: {dossier['summary']['score']}٪ | ساخت فایل‌ها…", None)
     return dossier
