@@ -1,28 +1,16 @@
-# Render Blueprint — permanent deployment for TejaratYar
-#
-# IMPORTANT:
-#   Persistent disks are NOT available on the Render free plan. To keep completed
-#   dossiers across restarts you need a paid plan (Starter or higher). Without a
-#   disk the app still works, but jobs/outputs reset on every deploy.
-#   Change `plan: starter` below to the plan you use.
-
+# Render Blueprint — FREE plan deployment for TejaratYar
 services:
   - type: web
     name: tejaratyar
     runtime: image
     repo: https://github.com/Setayesh-Jafari/tejaratyar
     branch: main
-    plan: starter            # paid plan — required for the persistent disk
+    plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     autoDeploy: true
-    region: frankfurt        # closest major region to Iran
-    numInstances: 1          # single worker is REQUIRED (in-memory job registry)
-
-    disk:
-      name: tejaratyar-data
-      mountPath: /data
-      sizeGB: 1
+    region: frankfurt
+    numInstances: 1
 
     envVars:
       - key: APP_TIMEZONE
@@ -33,4 +21,3 @@ services:
         value: "3"
       - key: JOB_TTL_HOURS
         value: "24"
-      # Render injects PORT automatically; leave unset here.
