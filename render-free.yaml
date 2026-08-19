@@ -1,0 +1,40 @@
+# Render Blueprint — FREE plan deployment for TejaratYar
+#
+# This Blueprint is tuned for Render's FREE web service plan. Use it for quick,
+# no-cost tests. For a permanent setup (with a persistent disk so completed
+# dossiers survive restarts) see render.yaml instead.
+#
+# IMPORTANT — free-plan limitations:
+#   * Persistent disks are NOT available on the free plan. Job outputs are kept
+#     in a local, ephemeral directory and are wiped on every deploy/restart.
+#     Fine for a quick test, NOT for real ongoing use.
+#   * Free web services spin down after ~15 minutes of inactivity and take a few
+#     seconds to wake up on the first request (cold start).
+#
+# To upgrade later: change `plan` to `starter` and add the disk block from
+# render.yaml.
+
+services:
+  - type: web
+    name: tejaratyar-free
+    runtime: image
+    repo: https://github.com/Setayesh-Jafari/tejaratyar
+    branch: main
+    plan: free               # Render free plan — no persistent disk
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    region: frankfurt        # closest major region to Iran
+    numInstances: 1          # single worker is REQUIRED (in-memory job registry)
+
+    # No `disk:` block — the free plan does not support persistent disks.
+    # DATA_DIR falls back to the app's local directory (ephemeral storage).
+
+    envVars:
+      - key: APP_TIMEZONE
+        value: Asia/Tehran
+      - key: MAX_ACTIVE_JOBS
+        value: "3"
+      - key: JOB_TTL_HOURS
+        value: "24"
+      # Render injects PORT automatically; leave unset here.
